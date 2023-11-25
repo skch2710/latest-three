@@ -8,7 +8,7 @@ spring:
         jwt:
           issuer-uri: http://localhost:8060
 #          jwk-set-uri: http://localhost:8060/.well-known/jwks.json
-#          audiences:
+#          audiences: sathish_ch:password
 #            local: http://localhost:8080
   mail:
     host: smtp.office365.com

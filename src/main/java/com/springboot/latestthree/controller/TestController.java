@@ -2,6 +2,7 @@ package com.springboot.latestthree.controller;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,7 @@ public class TestController {
 		System.out.println(">>USER_NAME:>>>"+authentication.getName());
 		System.out.println(">>Principal>>>"+authentication.getPrincipal());
 		System.out.println(">>TOKEN>>>: "+authorization);
+		System.out.println(">>Authorities : >>>"+authentication.getAuthorities());
 		
 		String token = authorization.substring("Bearer ".length());
 		
@@ -45,6 +47,7 @@ public class TestController {
 	}
 	
 	@GetMapping("/test-authority")
+	@PreAuthorize("hasAnyAuthority('Super User')")
 //	@PreAuthorize("hasAnyAuthority('Super User','Admin')")
 //	@PreAuthorize("hasRole('Super User')")
 	//@RolesAllowed("Admin")
