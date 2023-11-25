@@ -1,19 +1,11 @@
 package com.springboot.latestthree.config;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.stream.Collectors;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -50,15 +42,4 @@ public class SecurityConfig {
 //				.build();
 //	}
 		
-		static class GrantedAuthoritiesExtractor implements Converter<Jwt, Collection<GrantedAuthority>> {
-
-			public Collection<GrantedAuthority> convert(Jwt jwt) {
-				Collection<?> authorities = (Collection<?>) jwt.getClaims().getOrDefault("mycustomclaim",
-						Collections.emptyList());
-
-				return authorities.stream().map(Object::toString).map(SimpleGrantedAuthority::new)
-						.collect(Collectors.toList());
-			}
-}
-
 }
