@@ -2,6 +2,16 @@ server:
   port: 8061
   
 spring:
+  datasource:
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME}
+    url: ${JDBC_CONNECTION_STRING}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
   security:
     oauth2:
       resourceserver:

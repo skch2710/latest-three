@@ -2,7 +2,6 @@ package com.springboot.latestthree.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
@@ -12,20 +11,18 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.util.ByteArrayDataSource;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@EnableAsync
+//@EnableAsync ( This is already in Main Class )
 @Slf4j
 public class EmailSender {
 
@@ -49,8 +46,10 @@ public class EmailSender {
 	 */
 	private String createTemplate(String htmlFile, Object model) {
 	    try {
+	    	log.info("inside createTemplate ...... "+model);
 	        Template t = config.getTemplate(htmlFile);
-	        return FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
+	        String result = FreeMarkerTemplateUtils.processTemplateIntoString(t, model); 
+	        return result;
 	    } catch (IOException | TemplateException e) {
 	        log.error(e.getMessage());
 	        return "";
@@ -64,9 +63,10 @@ public class EmailSender {
 	 * @param bos
 	 */
 	public void sendEmail(Map<String, Object> model,ByteArrayOutputStream bos) {
-
+		log.info("Staring at sendEmail ...... "+model);
 		MimeMessage message = mailSender.createMimeMessage();
 		try {
+			
 			MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
 					StandardCharsets.UTF_8.name());
 
@@ -83,7 +83,8 @@ public class EmailSender {
 				helper.addAttachment(model.get("fileName").toString(), dataSource);	
 			}
 			mailSender.send(message);
-		} catch (MessagingException | UnsupportedEncodingException e) {
+			log.info("Ending at sendEmail ...... ");
+		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
 	}
