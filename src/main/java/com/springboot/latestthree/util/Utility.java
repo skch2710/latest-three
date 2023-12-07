@@ -11,6 +11,8 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -76,4 +78,9 @@ public class Utility {
 		return outputStream;
 	}
 
+	public static Boolean rolesAccess(String role) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Boolean isAccess = authentication.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals(role));
+		return isAccess;
+	}
 }
