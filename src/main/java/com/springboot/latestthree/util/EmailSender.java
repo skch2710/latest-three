@@ -46,12 +46,12 @@ public class EmailSender {
 	 */
 	private String createTemplate(String htmlFile, Object model) {
 	    try {
-	    	log.info("inside createTemplate ...... "+model);
+	    	log.info("inside createTemplate ...... ");
 	        Template t = config.getTemplate(htmlFile);
 	        String result = FreeMarkerTemplateUtils.processTemplateIntoString(t, model); 
 	        return result;
 	    } catch (IOException | TemplateException e) {
-	        log.error(e.getMessage());
+	        log.error("Error in createTemplate....::",e);
 	        return "";
 	    }
 	}
@@ -85,7 +85,7 @@ public class EmailSender {
 			mailSender.send(message);
 			log.info("Ending at sendEmail ...... ");
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error("Error in sendMail....::",e);
 		}
 	}
 

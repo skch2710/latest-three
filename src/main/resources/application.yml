@@ -32,3 +32,6 @@ spring:
           starttls:
             enable: true
           auth: true
+
+passwordlink-expiry: 24
+otp-expiry: 5

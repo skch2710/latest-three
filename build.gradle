@@ -36,6 +36,8 @@ dependencies {
 	implementation 'org.apache.poi:poi-ooxml:4.1.2'
 	//For pdf
 	implementation 'com.itextpdf:itextpdf:5.5.13'
+	
+	implementation 'com.google.guava:guava:32.1.3-jre'
   	
 	runtimeOnly 'org.postgresql:postgresql'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
