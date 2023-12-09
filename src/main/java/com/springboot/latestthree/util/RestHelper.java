@@ -1,7 +1,6 @@
 package com.springboot.latestthree.util;
 
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.HttpEntity;

@@ -23,8 +23,8 @@ public class CacheService {
 	private LoadingCache<Object, String> otpCache;
     private LoadingCache<Object, Object> passwordLinkCache;
 
-    public CacheService(@Value("${otp-expiry}") Integer EXPIRE_MINS,
-                        @Value("${passwordlink-expiry}") Integer EXPIRE_HOURS) {
+    public CacheService(@Value("${app.otp-expiry}") Integer EXPIRE_MINS,
+                        @Value("${app.passwordlink-expiry}") Integer EXPIRE_HOURS) {
         log.debug("Initializing CacheService");
         otpCache = CacheBuilder.newBuilder()
                 .expireAfterWrite(EXPIRE_MINS, TimeUnit.MINUTES)
@@ -50,14 +50,23 @@ public class CacheService {
         return now;
     }
 
-    public String getOtp(String key) {
-        log.debug("Fetching OTP for key: {}", key);
-        return otpCache.getUnchecked(key);
-    }
+	public String getOtp(String key) {
+		log.debug("Fetching OTP for key: {}", key);
+		try {
+			return otpCache.get(key);
+		} catch (Exception e) {
+			log.error("error in getOtp ");
+			return "0";
+		}
+	}
 
-    public Object getPasswordLinkSessionId(String key) {
-        return passwordLinkCache.getUnchecked(key);
-    }
+	public Object getPasswordLinkSessionId(String key) {
+		try {
+			return passwordLinkCache.get(key);
+		} catch (Exception e) {
+			return "0";
+		}
+	}
 
     public void clearOTP(String key) {
         otpCache.invalidate(key);

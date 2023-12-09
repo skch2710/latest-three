@@ -89,8 +89,7 @@ public class TestTwoController {
 	public ResponseEntity<?> getToken() {
 		Map<String,String> values = new HashMap<>();
 		values.put("url", "http://localhost:8060/oauth2/token");
-		values.put("clientId", "sathish_ch");
-		values.put("clientSecret", "password");
+		values.put("clientCred", "sathish_ch:password");
 		values.put("userName", "skch2710@gmail.com");
 		values.put("password", "S@thi$+b27");
 		values.put("grantType", "password");

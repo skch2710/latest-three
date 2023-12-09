@@ -10,6 +10,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class RestClientHelper {
 	
 	
@@ -30,26 +33,28 @@ public class RestClientHelper {
 	}
 	
 	public static <T> T getTokens(Map<String,String> values, Class<T> responseType) {
-		
-		String clientCredentials = values.get("clientId")+":"+values.get("clientSecret");
-		
-		String encodedCredentials = new String(Base64.getEncoder().encode(clientCredentials.getBytes()));
+		ResponseEntity<T> response = null;
+		try {
+			String encodedCredentials = new String(Base64.getEncoder().encode(values.get("clientCred").getBytes()));
 
-		// Create the request body with username and password
-		MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
-		requestBody.add("grant_type", values.get("grantType"));
-		requestBody.add("username", values.get("userName"));
-		requestBody.add("password", values.get("password"));
-		
-		ResponseEntity<T> response= RestClient.create().post()
-				  .uri(values.get("url"))
-				  .header(HttpHeaders.AUTHORIZATION, "Basic " + encodedCredentials)
-				  .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				  .body(requestBody)
-				  .retrieve()
-				  .toEntity(responseType);
-		
-		return response.getBody();
+			// Create the request body with username and password
+			MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+			requestBody.add("grant_type", values.get("grantType"));
+			requestBody.add("username", values.get("userName"));
+			requestBody.add("password", values.get("password"));
+			
+			response= RestClient.create().post()
+					  .uri(values.get("url"))
+					  .header(HttpHeaders.AUTHORIZATION, "Basic " + encodedCredentials)
+					  .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+					  .body(requestBody)
+					  .retrieve()
+					  .toEntity(responseType);
+			
+		} catch (Exception e) {
+			log.error("Error in getTokens...",e);
+		}
+		return response!=null ? response.getBody() : null;
 	}
 
 }

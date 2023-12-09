@@ -32,6 +32,9 @@ spring:
           starttls:
             enable: true
           auth: true
-
-passwordlink-expiry: 24
-otp-expiry: 5
+app:
+  auth-cred: sathish_ch:password
+  url: http://localhost:8060/oauth2/token
+  passwordlink-expiry: 24
+  otp-expiry: 5
+  isOtpEnable : true
