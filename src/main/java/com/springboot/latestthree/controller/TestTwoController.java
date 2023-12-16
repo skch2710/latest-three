@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -95,6 +96,19 @@ public class TestTwoController {
 		values.put("grantType", "password");
 		
 		JwtDTO dto = RestClientHelper.getTokens(values,JwtDTO.class);
+		
+		return ResponseEntity.ok(dto);
+	}
+	
+	@PostMapping("/get-jwt-refresh-token")
+	public ResponseEntity<?> getRefreshToken(@RequestBody JwtDTO dto) {
+		Map<String,String> values = new HashMap<>();
+		values.put("url", "http://localhost:8060/oauth2/token");
+		values.put("clientCred", "sathish_ch:password");
+		values.put("grantType", "refresh_token");
+		values.put("refresh_token", dto.getRefresh_token());
+		
+		dto = RestClientHelper.getRefreshToken(values,JwtDTO.class);
 		
 		return ResponseEntity.ok(dto);
 	}
