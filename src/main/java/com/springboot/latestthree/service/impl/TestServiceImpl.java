@@ -1,6 +1,7 @@
 package com.springboot.latestthree.service.impl;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,9 @@ public class TestServiceImpl implements TestService {
 	
 	@Autowired
 	private AsycClass asycClass;
+	
+	@Autowired
+	private CompletableFutureEx futureEx;
 
 	@Override
 	public Result testMehod() {
@@ -92,6 +96,25 @@ public class TestServiceImpl implements TestService {
 			
 		} catch (Exception e) {
 			log.error("Error in getAsyncData :: "+ e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public Result testCompletableFutureMehod() {
+		Result result = new Result();
+		try {
+			
+			result.setStatusCode(HttpStatus.PROCESSING.value());
+			result.setSuccessMessage("Pending");
+			result.setData("Running in Background");
+
+			String apiInput = "input";
+	        
+			futureEx.methodCompletableFuture(apiInput);
+	        
+		} catch (Exception e) {
+			log.error("Error in testCompletableFutureMehod :: ,"+ e);
 		}
 		return result;
 	}

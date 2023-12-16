@@ -42,6 +42,12 @@ public class TestTwoController {
 		return ResponseEntity.ok(result);
 	}
 	
+	@GetMapping("/test-completable-futureMehod")
+	public ResponseEntity<?> testCompletableFutureMehod(){
+		Result result = testService.testCompletableFutureMehod();
+		return ResponseEntity.ok(result);
+	}
+	
 	@GetMapping("/test-file")
 	public ResponseEntity<?> testFile(){
 		// Specify the local path where you want to create the text file

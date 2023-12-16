@@ -8,4 +8,6 @@ public interface TestService {
 	
 	Result getAsyncData(String uuid);
 	
+	Result testCompletableFutureMehod();
+	
 }
