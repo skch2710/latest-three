@@ -33,7 +33,7 @@ spring:
             enable: true
           auth: true
 app:
-  auth-cred: sathish_ch:password
+  auth-cred: sathish_ch:S@th!$h
   url: http://localhost:8060/oauth2/token
   passwordlink-expiry: 24
   otp-expiry: 5

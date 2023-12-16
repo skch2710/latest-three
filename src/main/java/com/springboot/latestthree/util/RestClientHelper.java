@@ -40,11 +40,11 @@ public class RestClientHelper {
 		try {
 			String encodedCredentials = new String(Base64.getEncoder().encode(values.get("clientCred").getBytes()));
 
-			// Create the request body with username and password
+			// Create the request body with username and pwd
 			MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
 			requestBody.add("grant_type", values.get("grantType"));
 			requestBody.add("username", values.get("userName"));
-			requestBody.add("password", values.get("password"));
+			requestBody.add("password", values.get("pwd"));
 			
 			response= RestClient.create().post()
 					  .uri(values.get("url"))

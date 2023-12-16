@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.latestthree.dto.JwtDTO;
+import com.springboot.latestthree.dto.LoginRequest;
 import com.springboot.latestthree.dto.Result;
 import com.springboot.latestthree.dto.StudentDTO;
 import com.springboot.latestthree.service.TestService;
@@ -86,14 +88,20 @@ public class TestTwoController {
 		return ResponseEntity.ok("post-test-without-jwt");
 	}
 	
-	@GetMapping("/get-jwt-token")
-	public ResponseEntity<?> getToken() {
+	@Value("${app.url}")
+	private String url;
+	
+	@Value("${app.auth-cred}")
+	private String clientCred;
+	
+	@PostMapping("/get-jwt-token")
+	public ResponseEntity<?> getToken(@RequestBody LoginRequest request) {
 		Map<String,String> values = new HashMap<>();
-		values.put("url", "http://localhost:8060/oauth2/token");
-		values.put("clientCred", "sathish_ch:password");
-		values.put("userName", "skch2710@gmail.com");
-		values.put("password", "S@thi$+b27");
-		values.put("grantType", "password");
+		values.put("url", url);
+		values.put("clientCred", clientCred);
+		values.put("userName", request.getEmailId());
+		values.put("pwd", request.getPassword());
+		values.put("grantType", "custom_pwd");
 		
 		JwtDTO dto = RestClientHelper.getTokens(values,JwtDTO.class);
 		
@@ -103,8 +111,8 @@ public class TestTwoController {
 	@PostMapping("/get-jwt-refresh-token")
 	public ResponseEntity<?> getRefreshToken(@RequestBody JwtDTO dto) {
 		Map<String,String> values = new HashMap<>();
-		values.put("url", "http://localhost:8060/oauth2/token");
-		values.put("clientCred", "sathish_ch:password");
+		values.put("url", url);
+		values.put("clientCred", clientCred);
 		values.put("grantType", "refresh_token");
 		values.put("refresh_token", dto.getRefresh_token());
 		

@@ -28,8 +28,8 @@ public class JwtUtil {
 			values.put("url", url);
 			values.put("clientCred", clientCred);
 			values.put("userName", request.getEmailId());
-			values.put("password", request.getPassword());
-			values.put("grantType", "password");
+			values.put("pwd", request.getPassword());
+			values.put("grantType", "custom_pwd");
 			
 			dto = RestClientHelper.getTokens(values,JwtDTO.class);
 		}catch(Exception e) {
