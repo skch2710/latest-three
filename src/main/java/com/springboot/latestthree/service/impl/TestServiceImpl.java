@@ -28,6 +28,9 @@ public class TestServiceImpl implements TestService {
 	@Autowired
 	private CompletableFutureEx futureEx;
 
+	@Autowired
+	private TaskEx taskEx;
+	
 	@Override
 	public Result testMehod() {
 		log.info("starting asyncMehod ::::");
@@ -104,15 +107,24 @@ public class TestServiceImpl implements TestService {
 	public Result testCompletableFutureMehod() {
 		Result result = new Result();
 		try {
-			
+			long initialValue = System.currentTimeMillis();
+			System.out.println("Intialize....."+initialValue);
 			result.setStatusCode(HttpStatus.PROCESSING.value());
 			result.setSuccessMessage("Pending");
-			result.setData("Running in Background");
+//			result.setData("Running in Background");
 
 			String apiInput = "input";
 	        
-			futureEx.methodCompletableFuture(apiInput);
-	        
+//			futureEx.methodCompletableFuture(apiInput);
+//			taskEx.task2(apiInput);
+			String res = taskEx.task3(apiInput);
+			result.setData(res);
+//			taskEx.finalTask(apiInput);
+			
+			long finalValue = System.currentTimeMillis();
+			
+			System.out.println("Total Time Taken :: "+(finalValue-initialValue));
+			
 		} catch (Exception e) {
 			log.error("Error in testCompletableFutureMehod :: ,"+ e);
 		}
