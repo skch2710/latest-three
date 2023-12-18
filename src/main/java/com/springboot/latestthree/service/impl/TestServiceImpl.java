@@ -1,5 +1,8 @@
 package com.springboot.latestthree.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -30,6 +33,9 @@ public class TestServiceImpl implements TestService {
 
 	@Autowired
 	private TaskEx taskEx;
+	
+	@Autowired
+	private CompletableFutureSaveAll futureSaveAll;
 	
 	@Override
 	public Result testMehod() {
@@ -117,9 +123,27 @@ public class TestServiceImpl implements TestService {
 	        
 //			futureEx.methodCompletableFuture(apiInput);
 //			taskEx.task2(apiInput);
-			String res = taskEx.task3(apiInput);
-			result.setData(res);
+//			String res = taskEx.task3(apiInput);
+//			result.setData(res);
 //			taskEx.finalTask(apiInput);
+			
+//			List<String> itemList = Arrays.asList("aaa","bbb","cccc","dddd");
+			List<String> itemList = new ArrayList<>();
+			for(int i = 0 ; i<=50;i++) {
+				itemList.add("s"+i);
+			}
+			
+//			List<CompletableFuture<Void>> features = new ArrayList<>();
+//			for (String item : itemList) {
+//				futureSaveAll.testAsync(item,features);
+//				Thread.sleep(3000);
+//			}
+//			CompletableFuture<Void> allFeatures = CompletableFuture.allOf(features.toArray(new CompletableFuture[0]));
+//			allFeatures.join();
+			
+			List<String> serItemList = futureSaveAll.batchInsertRecords(itemList);
+			
+			result.setData(serItemList);
 			
 			long finalValue = System.currentTimeMillis();
 			
