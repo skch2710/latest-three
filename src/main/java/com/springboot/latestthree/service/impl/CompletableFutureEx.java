@@ -3,6 +3,8 @@ package com.springboot.latestthree.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.springframework.stereotype.Service;
 
@@ -16,11 +18,7 @@ public class CompletableFutureEx {
 
 		try {
 			CompletableFuture<String> result1 = CompletableFuture.supplyAsync(() -> {
-				try {
-					return method1(apiInput);
-				} catch (InterruptedException e) {
-					throw new RuntimeException(e);
-				}
+				return method1(apiInput);
 			});
 
 			CompletableFuture<String> result2 = CompletableFuture.supplyAsync(() -> {
@@ -55,11 +53,15 @@ public class CompletableFutureEx {
 	}
 
 	// Independent method 1
-	public String method1(String input1) throws InterruptedException {
+	public String method1(String input1){
 		System.out.println("started ... m1--->");
-		Thread.sleep(8000);
+		try {
+			Thread.sleep(8000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		System.out.println("m1--->");
-		return "Result from method 1" + input1;
+		return "Result from method 1 " + input1;
 	}
 
 	// Independent method 2
@@ -67,7 +69,7 @@ public class CompletableFutureEx {
 		System.out.println("started ... m2--->");
 		Thread.sleep(5000);
 		System.out.println("m2--->");
-		return "Result from method 2" + input2;
+		return "Result from method 2 " + input2;
 	}
 
 	// Independent method 3
@@ -75,8 +77,24 @@ public class CompletableFutureEx {
 		System.out.println("started ... m3--->");
 		Thread.sleep(6000);
 		System.out.println("m3--->");
-		return "Result from method 3" + input3;
+		return "Result from method 3 " + input3;
 	}
+	
+	// Independent method 4
+		public String method4(String input) throws InterruptedException {
+			System.out.println("started ... m4--->");
+			Thread.sleep(6000);
+			System.out.println("m4--->");
+			return "Result from method 4 " + input;
+		}
+		
+		// Independent method 5
+		public String method5(String input) throws InterruptedException {
+			System.out.println("started ... m5--->");
+			Thread.sleep(6000);
+			System.out.println("m5--->");
+			return "Result from method 5 " + input;
+		}
 
 	// Dependent method combining results of method1, method2, and method3
 	public void combineMethods(String result1, String result2, String result3) {
@@ -96,11 +114,7 @@ public class CompletableFutureEx {
 		Map<Long,String> result = new HashMap<>();
 		try {
 			CompletableFuture<String> result1 = CompletableFuture.supplyAsync(() -> {
-				try {
-					return method1(apiInput);
-				} catch (InterruptedException e) {
-					throw new RuntimeException(e);
-				}
+				return method1(apiInput);
 			});
 
 			CompletableFuture<String> result2 = CompletableFuture.supplyAsync(() -> {
@@ -118,13 +132,32 @@ public class CompletableFutureEx {
 					throw new RuntimeException(e);
 				}
 			});
+			
+			CompletableFuture<String> result4 = CompletableFuture.supplyAsync(() -> {
+				try {
+					return method4(apiInput);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			});
+			
+			CompletableFuture<String> result5 = CompletableFuture.supplyAsync(() -> {
+				try {
+					return method5(apiInput);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			});
 
-			CompletableFuture<Void> allOfFuture = CompletableFuture.allOf(result1, result2, result3);
+			CompletableFuture<Void> allOfFuture = CompletableFuture.allOf(result1, 
+					result2, result3, result4, result5);
 			allOfFuture.get();
 			System.out.println(">>>>>>>>>: All Completed.....");
 			result.put(1L, result1.get());
 			result.put(2L, result2.get());
 			result.put(3L, result3.get());
+			result.put(4L, result4.get());
+			result.put(5L, result5.get());
 			
 		} catch (Exception e) {
 			log.error("Error in methodCompletableFuture,"+e);
@@ -132,5 +165,64 @@ public class CompletableFutureEx {
 		return result;
 	}
 
+	/** ====== With Exeguter Service */
+	
+	public Map<Long,String> testReturnExeguter(String apiInput) {
+		Map<Long,String> result = new HashMap<>();
+		ExecutorService executor = Executors.newFixedThreadPool(5);
+		try {
+			
+			CompletableFuture<String> result1 = CompletableFuture.supplyAsync(() -> {
+				return method1(apiInput);
+			},executor);
 
+			CompletableFuture<String> result2 = CompletableFuture.supplyAsync(() -> {
+				try {
+					return method2(apiInput);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			},executor);
+
+			CompletableFuture<String> result3 = CompletableFuture.supplyAsync(() -> {
+				try {
+					return method3(apiInput);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			},executor);
+			
+			CompletableFuture<String> result4 = CompletableFuture.supplyAsync(() -> {
+				try {
+					return method4(apiInput);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			},executor);
+			
+			CompletableFuture<String> result5 = CompletableFuture.supplyAsync(() -> {
+				try {
+					return method5(apiInput);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			},executor);
+			
+			CompletableFuture<Void> allOfFuture = CompletableFuture.allOf(result1, 
+					result2, result3, result4, result5);
+			allOfFuture.get();
+			System.out.println(">>>>>>>>>: All Completed.....");
+			result.put(1L, result1.get());
+			result.put(2L, result2.get());
+			result.put(3L, result3.get());
+			result.put(4L, result4.get());
+			result.put(5L, result5.get());
+			
+		} catch (Exception e) {
+			log.error("Error in methodCompletableFuture,"+e);
+		}finally {
+			executor.shutdown();
+		}
+		return result;
+	}
 }

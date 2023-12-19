@@ -146,7 +146,7 @@ public class TestServiceImpl implements TestService {
 			
 //			List<String> serItemList = futureSaveAll.batchInsertRecords(itemList);
 			
-			testReturn = futureEx.testReturn(apiInput);
+			testReturn = futureEx.testReturnExeguter(apiInput);
 			
 			System.out.println("Data ...??? : "+testReturn.get(1L));
 			
