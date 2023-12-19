@@ -3,6 +3,8 @@ package com.springboot.latestthree.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -47,7 +49,7 @@ public class CompletableFutureSaveAll {
 		return data;
 	}
 
-	public CompletableFuture<List<String>> testAsync2(List<String> data) {
+	public CompletableFuture<List<String>> testAsync2(List<String> data,ExecutorService executor) {
 		System.out.println("Started method...." + data);
 		CompletableFuture<List<String>> feature = CompletableFuture.supplyAsync(() -> {
 			try {
@@ -55,25 +57,25 @@ public class CompletableFutureSaveAll {
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
-		});
+		},executor);
 		return feature;
 	}
 
 	public List<String> batchInsertRecords(List<String> records) {
 		List<String> itemsList = new ArrayList<>();
 		try {
+			ExecutorService executor = Executors.newFixedThreadPool(10);
 			List<CompletableFuture<List<String>>> features = new ArrayList<>();
-			int batchSize = 20; // Set the desired batch size
+			int batchSize = 200; // Set the desired batch size
 			for (int i = 0; i < records.size(); i += batchSize) {
 				int endIndex = Math.min(i + batchSize, records.size());
 				List<String> batch = records.subList(i, endIndex);
-				features.add(testAsync2(batch));
+				features.add(testAsync2(batch,executor));
 			}
 			CompletableFuture<Void> allFeatures = CompletableFuture.allOf(features.toArray(new CompletableFuture[0]));
 			allFeatures.join();
 			System.out.println(">>>>>>>" + features.size());
-			itemsList = features.stream().map(CompletableFuture::join)
-					.flatMap(List::stream)
+			itemsList = features.stream().map(CompletableFuture::join).flatMap(List::stream)
 					.collect(Collectors.toList());
 //			for (CompletableFuture<List<String>> feature : features) {
 //				itemsList.addAll(feature.get());
@@ -83,4 +85,5 @@ public class CompletableFutureSaveAll {
 		}
 		return itemsList;
 	}
+
 }

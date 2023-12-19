@@ -1,5 +1,7 @@
 package com.springboot.latestthree.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.stereotype.Service;
@@ -86,5 +88,49 @@ public class CompletableFutureEx {
 //		System.out.println(result1 + " + " + result2 + " + " + result3);
 //		return result1 + " + " + result2 + " + " + result3;
 //	}
+	
+	
+	/*-----------------------*/
+	
+	public Map<Long,String> testReturn(String apiInput) {
+		Map<Long,String> result = new HashMap<>();
+		try {
+			CompletableFuture<String> result1 = CompletableFuture.supplyAsync(() -> {
+				try {
+					return method1(apiInput);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			});
+
+			CompletableFuture<String> result2 = CompletableFuture.supplyAsync(() -> {
+				try {
+					return method2(apiInput);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			});
+
+			CompletableFuture<String> result3 = CompletableFuture.supplyAsync(() -> {
+				try {
+					return method3(apiInput);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			});
+
+			CompletableFuture<Void> allOfFuture = CompletableFuture.allOf(result1, result2, result3);
+			allOfFuture.get();
+			System.out.println(">>>>>>>>>: All Completed.....");
+			result.put(1L, result1.get());
+			result.put(2L, result2.get());
+			result.put(3L, result3.get());
+			
+		} catch (Exception e) {
+			log.error("Error in methodCompletableFuture,"+e);
+		}
+		return result;
+	}
+
 
 }

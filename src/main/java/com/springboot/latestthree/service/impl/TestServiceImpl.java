@@ -3,6 +3,7 @@ package com.springboot.latestthree.service.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -36,6 +37,8 @@ public class TestServiceImpl implements TestService {
 	
 	@Autowired
 	private CompletableFutureSaveAll futureSaveAll;
+
+	private Map<Long, String> testReturn;
 	
 	@Override
 	public Result testMehod() {
@@ -128,10 +131,10 @@ public class TestServiceImpl implements TestService {
 //			taskEx.finalTask(apiInput);
 			
 //			List<String> itemList = Arrays.asList("aaa","bbb","cccc","dddd");
-			List<String> itemList = new ArrayList<>();
-			for(int i = 0 ; i<=50;i++) {
-				itemList.add("s"+i);
-			}
+//			List<String> itemList = new ArrayList<>();
+//			for(int i = 0 ; i<=100000;i++) {
+//				itemList.add("s"+i);
+//			}
 			
 //			List<CompletableFuture<Void>> features = new ArrayList<>();
 //			for (String item : itemList) {
@@ -141,9 +144,13 @@ public class TestServiceImpl implements TestService {
 //			CompletableFuture<Void> allFeatures = CompletableFuture.allOf(features.toArray(new CompletableFuture[0]));
 //			allFeatures.join();
 			
-			List<String> serItemList = futureSaveAll.batchInsertRecords(itemList);
+//			List<String> serItemList = futureSaveAll.batchInsertRecords(itemList);
 			
-			result.setData(serItemList);
+			testReturn = futureEx.testReturn(apiInput);
+			
+			System.out.println("Data ...??? : "+testReturn.get(1L));
+			
+			result.setData(testReturn);
 			
 			long finalValue = System.currentTimeMillis();
 			

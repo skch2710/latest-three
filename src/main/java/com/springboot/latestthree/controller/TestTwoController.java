@@ -26,6 +26,8 @@ import com.springboot.latestthree.service.TestService;
 import com.springboot.latestthree.util.EmailSender;
 import com.springboot.latestthree.util.RestClientHelper;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/test2")
 public class TestTwoController {
@@ -43,6 +45,7 @@ public class TestTwoController {
 	}
 	
 	@GetMapping("/test-completable-futureMehod")
+	@Operation(summary="Test completable future",description = "Return Data Using completable future")
 	public ResponseEntity<?> testCompletableFutureMehod(){
 		Result result = testService.testCompletableFutureMehod();
 		return ResponseEntity.ok(result);
