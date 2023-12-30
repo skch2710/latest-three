@@ -1,11 +1,11 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.2.0'
-  	id 'io.spring.dependency-management' version '1.1.4'
+	id 'org.springframework.boot' version '3.2.1'
+    id 'io.spring.dependency-management' version '1.1.4'
 }
 
 group = 'com.spring-boot'
-version = '3.2.0'
+version = '3.2.1'
 
 java {
 	sourceCompatibility = '17'
@@ -25,10 +25,8 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-	//implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
   	implementation 'org.springframework.boot:spring-boot-starter-mail'
   	
@@ -37,12 +35,22 @@ dependencies {
 	//For pdf
 	implementation 'com.itextpdf:itextpdf:5.5.13'
 	
+	//for object mapping
+	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
+    implementation 'org.projectlombok:lombok:1.18.30'
+    //annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
+    //annotationProcessor "org.mapstruct:mapstruct-processor:1.5.2.Final"
+    //annotationProcessor "org.projectlombok:lombok:1.18.16"
+	
 	implementation 'com.google.guava:guava:32.1.3-jre'
   	
 	runtimeOnly 'org.postgresql:postgresql'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
-	annotationProcessor 'org.projectlombok:lombok'
+	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 }
 
 tasks.named('test') {

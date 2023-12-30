@@ -1,7 +1,5 @@
 package com.springboot.latestthree.dto;
 
-import com.springboot.latestthree.model.Employee;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +11,7 @@ public class LoginResponse {
 	
 	private Boolean isOtpEnable;
 	private String otp;
-	private Employee employee;
+	private EmployeeDTO employee;
 	private JwtDTO jwtDTO;
 	
 }

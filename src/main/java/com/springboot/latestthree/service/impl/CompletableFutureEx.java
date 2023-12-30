@@ -114,11 +114,13 @@ public class CompletableFutureEx {
 		Map<Long,String> result = new HashMap<>();
 		try {
 			CompletableFuture<String> result1 = CompletableFuture.supplyAsync(() -> {
+				log.info(">>Thread Name: "+Thread.currentThread());
 				return method1(apiInput);
 			});
 
 			CompletableFuture<String> result2 = CompletableFuture.supplyAsync(() -> {
 				try {
+					log.info(">>Thread Name: "+Thread.currentThread());
 					return method2(apiInput);
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
@@ -127,6 +129,7 @@ public class CompletableFutureEx {
 
 			CompletableFuture<String> result3 = CompletableFuture.supplyAsync(() -> {
 				try {
+					log.info(">>Thread Name: "+Thread.currentThread());
 					return method3(apiInput);
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
@@ -135,6 +138,7 @@ public class CompletableFutureEx {
 			
 			CompletableFuture<String> result4 = CompletableFuture.supplyAsync(() -> {
 				try {
+					log.info(">>Thread Name: "+Thread.currentThread());
 					return method4(apiInput);
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
@@ -143,6 +147,7 @@ public class CompletableFutureEx {
 			
 			CompletableFuture<String> result5 = CompletableFuture.supplyAsync(() -> {
 				try {
+					log.info(">>Thread Name: "+Thread.currentThread());
 					return method5(apiInput);
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
@@ -173,11 +178,13 @@ public class CompletableFutureEx {
 		try {
 			
 			CompletableFuture<String> result1 = CompletableFuture.supplyAsync(() -> {
+				log.info(">>Thread Name: "+Thread.currentThread().getName());
 				return method1(apiInput);
 			},executor);
 
 			CompletableFuture<String> result2 = CompletableFuture.supplyAsync(() -> {
 				try {
+					log.info(">>Thread Name: "+Thread.currentThread().getName());
 					return method2(apiInput);
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
@@ -186,6 +193,7 @@ public class CompletableFutureEx {
 
 			CompletableFuture<String> result3 = CompletableFuture.supplyAsync(() -> {
 				try {
+					log.info(">>Thread Name: "+Thread.currentThread().getName());
 					return method3(apiInput);
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
@@ -194,6 +202,7 @@ public class CompletableFutureEx {
 			
 			CompletableFuture<String> result4 = CompletableFuture.supplyAsync(() -> {
 				try {
+					log.info(">>Thread Name: "+Thread.currentThread().getName());
 					return method4(apiInput);
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
@@ -202,6 +211,7 @@ public class CompletableFutureEx {
 			
 			CompletableFuture<String> result5 = CompletableFuture.supplyAsync(() -> {
 				try {
+					log.info(">>Thread Name: "+Thread.currentThread().getName());
 					return method5(apiInput);
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);

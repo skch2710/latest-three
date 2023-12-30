@@ -7,11 +7,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.springboot.latestthree.dao.EmployeeDAO;
+import com.springboot.latestthree.dto.EmployeeDTO;
 import com.springboot.latestthree.dto.JwtDTO;
 import com.springboot.latestthree.dto.LoginRequest;
 import com.springboot.latestthree.dto.LoginResponse;
 import com.springboot.latestthree.dto.Result;
 import com.springboot.latestthree.exception.CustomException;
+import com.springboot.latestthree.mapper.ObjectMapper;
 import com.springboot.latestthree.model.Employee;
 import com.springboot.latestthree.service.LoginService;
 import com.springboot.latestthree.util.CacheService;
@@ -22,6 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class LoginServiceImpl implements LoginService {
+	
+	private ObjectMapper MAPPER = ObjectMapper.INSTANCE;
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -65,7 +69,8 @@ public class LoginServiceImpl implements LoginService {
 						result.setStatusCode(HttpStatus.OK.value());
 					} else {
 						JwtDTO jwtDTO = jwtUtil.getToken(request);
-						loginResponse.setEmployee(employee);
+						EmployeeDTO employeeDTO = MAPPER.fromEmployeeModel(employee);
+						loginResponse.setEmployee(employeeDTO);
 						loginResponse.setJwtDTO(jwtDTO);
 						result.setData(loginResponse);
 						result.setSuccessMessage("Login Succesfully.....");
@@ -96,7 +101,7 @@ public class LoginServiceImpl implements LoginService {
 				cacheService.clearOTP(emailId);
 
 				JwtDTO jwtDTO = jwtUtil.getToken(request);
-				loginResponse.setEmployee(employee);
+				loginResponse.setEmployee(MAPPER.fromEmployeeModel(employee));
 				loginResponse.setJwtDTO(jwtDTO);
 				resut.setData(loginResponse);
 
